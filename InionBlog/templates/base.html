@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'main' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">Обо мне</a></li>
+                <li><a href="{% url 'recipes' %}">Рецепты</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="content" style="padding: 20px;">
+        {% block content %}
+        <!-- Контент -->
+        {% endblock %}
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>О нас</h3>
+                <p>Мы компания, предоставляющая качественные товары и услуги. Наша цель - обеспечить лучший сервис для наших клиентов.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p><strong>Email:</strong> inion@gmail.com</p>
+                <p><strong>Телефон:</strong> +7 9021 01 01 01</p>
+                <p><strong>Основной сайт:</strong> <a href="https://dzen.ru/bestrecipes">https://dzen.ru/bestrecipes</a></p>
+                <!-- Добавьте другие контактные данные, если нужно -->
+            </div>
+        </div>
+        <p>&copy; 2023 Мой сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
