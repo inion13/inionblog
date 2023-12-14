@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'regstyle.css' %}">
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+    <div>
+        <h2>Login</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
 
 </body>
 </html>

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать рецепт{% endblock %}
+
+{% block content %}
+    <h2>Создать рецепт</h2>
+    <form method="post" action="{% url 'create_recipe' %}">
+        {% csrf_token %}
+
+        <label for="id_title">Название:</label>
+        <input type="text" name="title" id="id_title" required>
+        <br>
+
+        <label for="id_description">Описание:</label>
+        <textarea name="description" id="id_description" rows="5" required></textarea>
+        <br>
+
+        <h3>Ингредиенты:</h3>
+        <ul>
+            <li><input type="text" name="ingredient1" required></li>
+            <li><input type="text" name="ingredient2" required></li>
+        </ul>
+
+        <h3>Шаги:</h3>
+        <ol>
+            <li><textarea name="step1" rows="3" required></textarea></li>
+            <li><textarea name="step2" rows="3" required></textarea></li>
+        </ol>
+
+        <button type="submit">Создать</button>
+    </form>
+{% endblock %}

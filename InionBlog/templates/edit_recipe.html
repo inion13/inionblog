@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать рецепт - {{ recipe.title }}{% endblock %}
+
+{% block content %}
+    <h2>Редактировать рецепт</h2>
+    <form method="post" action="{% url 'edit_recipe' recipe_id=recipe.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить изменения</button>
+    </form>
+{% endblock %}
