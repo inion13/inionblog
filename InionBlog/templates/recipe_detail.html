@@ -15,8 +15,8 @@
 
     <h3>Шаги:</h3>
     <ol>
-        {% for step in recipe.steps.all %}
-            <li>{{ step.description }}</li>
+        {% for step in recipe.steps %}
+            <li>{{ step }}</li>
         {% endfor %}
     </ol>
 

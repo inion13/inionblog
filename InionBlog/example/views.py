@@ -1,10 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Recipe, Ingredient
 from .forms import RecipeForm, RecipeDeleteForm
+
+
+def is_superuser(user):
+    return user.is_superuser
 
 
 def user_login(request):
@@ -53,29 +57,16 @@ def recipe_list(request):
 
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.steps = recipe.steps.split('\n')
     return render(request, 'recipe_detail.html', {'recipe': recipe})
 
 
+@user_passes_test(is_superuser, login_url='/registration/')
 def create_recipe(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)  # Здесь commit=False предотвращает сохранение формы, чтобы мы могли добавить ингредиенты
-            ingredients_list = form.cleaned_data.get('ingredients', [])
-
-            # Исключаем ингредиенты из данных, чтобы они не попали в get_or_create
-            cleaned_data = form.cleaned_data.copy()
-            cleaned_data.pop('ingredients', None)
-
-            instance, created = Recipe.objects.get_or_create(**cleaned_data)
-
-            if created:
-                # Если объект был создан, связываем ингредиенты
-                for ingredient_name in ingredients_list:
-                    ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name)
-                    instance.ingredients.add(ingredient)
-
-            instance.save()
+            instance = form.save()
             return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm()

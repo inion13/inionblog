@@ -12,6 +12,7 @@ class RecipeDeleteForm(forms.Form):
 
 class RecipeForm(forms.ModelForm):
     ingredients = forms.CharField(
+        label='Ингредиенты',
         widget=forms.Textarea(attrs={'placeholder': 'Введите ингредиенты, каждый с новой строки'}),
         required=False
     )
@@ -19,6 +20,12 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ['title', 'description', 'ingredients', 'steps', 'image']
+        labels = {
+            'title': 'Название',
+            'description': 'Описание',
+            'steps': 'Шаги',
+            'image': 'Изображение',
+        }
 
     def clean_ingredients(self):
         ingredients_data = self.cleaned_data['ingredients']
@@ -26,22 +33,18 @@ class RecipeForm(forms.ModelForm):
         return ingredients_list
 
     def save(self, commit=True):
-        # Создаем или получаем объекты Ingredient и связываем их с рецептом
-        ingredients_list = self.cleaned_data.get('ingredients', [])
+        instance, created = super().save(commit=False), False
 
-        # Исключаем ингредиенты из данных, чтобы они не попали в get_or_create
-        cleaned_data = self.cleaned_data.copy()
-        cleaned_data.pop('ingredients', None)
-
-        instance, created = Recipe.objects.get_or_create(**cleaned_data)  # Получаем или создаем объект
-
-        if created:
-            # Если объект был создан, связываем ингредиенты
-            for ingredient_name in ingredients_list:
-                ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name)
-                instance.ingredients.add(ingredient)
+        if not instance.pk:
+            created = True
 
         if commit:
             instance.save()
+
+        ingredients_list = self.cleaned_data.get('ingredients', [])
+
+        for ingredient_name in ingredients_list:
+            ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name)
+            instance.ingredients.add(ingredient)
 
         return instance
