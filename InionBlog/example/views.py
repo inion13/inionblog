@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Recipe, Ingredient
+from .models import Recipe
 from .forms import RecipeForm, RecipeDeleteForm
 
 
@@ -58,6 +58,7 @@ def recipe_list(request):
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     recipe.steps = recipe.steps.split('\n')
+    recipe.ingredients = recipe.ingredients.split('\n')
     return render(request, 'recipe_detail.html', {'recipe': recipe})
 
 
@@ -66,26 +67,28 @@ def create_recipe(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            instance = form.save()
-            return redirect('recipe_detail', recipe_id=instance.pk)
+            form.save()
+            return redirect('recipe_list')
     else:
         form = RecipeForm()
 
     return render(request, 'create_recipe.html', {'form': form})
 
 
+@user_passes_test(is_superuser, login_url='/registration/')
 def edit_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == 'POST':
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
-            form.save()
-            return redirect('recipe_list')
+            instance = form.save()
+            return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm(instance=recipe)
     return render(request, 'edit_recipe.html', {'form': form, 'recipe': recipe})
 
 
+@user_passes_test(is_superuser, login_url='/registration/')
 def delete_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == 'POST':

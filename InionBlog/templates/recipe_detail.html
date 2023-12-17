@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ recipe.title }}{% endblock %}
-
 {% block content %}
-    <h2>{{ recipe.title }}</h2>
-    <p>{{ recipe.description }}</p>
+    <div class="container">
+        <h1>{{ recipe.title }}</h1>
+        <p>{{ recipe.description }}</p>
+        <h2>Ингредиенты:</h2>
+        <ul>
+            {% for ingredient in recipe.ingredients %}
+                <li>{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <h2>Шаги приготовления:</h2>
+        <ul>
+            {% for step in recipe.steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
 
-    <h3>Ингредиенты:</h3>
-    <ul>
-        {% for ingredient in recipe.ingredients.all %}
-            <li>{{ ingredient.name }}</li>
-        {% endfor %}
-    </ul>
+        {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+        {% endif %}
 
-    <h3>Шаги:</h3>
-    <ol>
-        {% for step in recipe.steps %}
-            <li>{{ step }}</li>
-        {% endfor %}
-    </ol>
-
-    <a href="{% url 'edit_recipe' recipe_id=recipe.id %}">Редактировать рецепт</a>
-    <p></p>
-    <a href="{% url 'delete_recipe' recipe_id=recipe.id %}">Удалить рецепт</a>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'edit_recipe' recipe_id=recipe.pk %}">Редактировать рецепт</a>
+            <a href="{% url 'delete_recipe' recipe_id=recipe.pk %}">Удалить рецепт</a>
+        {% endif %}
+    </div>
 {% endblock %}

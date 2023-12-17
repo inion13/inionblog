@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recipe, Ingredient
+from .models import Recipe
 
 
 class RecipeDeleteForm(forms.Form):
@@ -16,6 +16,11 @@ class RecipeForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'placeholder': 'Введите ингредиенты, каждый с новой строки'}),
         required=False
     )
+    steps = forms.CharField(
+        label='Шаги',
+        widget=forms.Textarea(attrs={'placeholder': 'Введите шаги приготовления, каждый с новой строки'}),
+        required=False
+    )
 
     class Meta:
         model = Recipe
@@ -23,28 +28,7 @@ class RecipeForm(forms.ModelForm):
         labels = {
             'title': 'Название',
             'description': 'Описание',
+            'ingredients': 'Ингредиенты',
             'steps': 'Шаги',
             'image': 'Изображение',
         }
-
-    def clean_ingredients(self):
-        ingredients_data = self.cleaned_data['ingredients']
-        ingredients_list = [ingredient.strip() for ingredient in ingredients_data.split('\n') if ingredient.strip()]
-        return ingredients_list
-
-    def save(self, commit=True):
-        instance, created = super().save(commit=False), False
-
-        if not instance.pk:
-            created = True
-
-        if commit:
-            instance.save()
-
-        ingredients_list = self.cleaned_data.get('ingredients', [])
-
-        for ingredient_name in ingredients_list:
-            ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name)
-            instance.ingredients.add(ingredient)
-
-        return instance

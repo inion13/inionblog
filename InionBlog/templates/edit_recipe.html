@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Редактировать рецепт - {{ recipe.title }}{% endblock %}
-
 {% block content %}
-    <h2>Редактировать рецепт</h2>
-    <form method="post" action="{% url 'edit_recipe' recipe_id=recipe.id %}">
+    <h1>Редактировать рецепт</h1>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить изменения</button>
+        {{ form.title.label_tag }} {{ form.title }}<br>
+        {{ form.description.label_tag }} {{ form.description }}<br>
+        {{ form.ingredients.label_tag }} {{ form.ingredients }}<br>
+        {{ form.steps.label_tag }} {{ form.steps }}<br>
+        {{ form.image.label_tag }} {{ form.image }}<br>
+        <input type="submit" value="Сохранить изменения">
     </form>
+    <a href="{% url 'recipe_list' %}">Назад к списку рецептов</a>
 {% endblock %}

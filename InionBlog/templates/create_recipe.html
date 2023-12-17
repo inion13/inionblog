@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Создать рецепт{% endblock %}
-
 {% block content %}
-  <h2>Создать рецепт</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Создать рецепт</button>
-  </form>
-  <p><a href="{% url 'recipe_list' %}">Назад к списку рецептов</a></p>
+    <h1>Создать рецепт</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.title.label_tag }} {{ form.title }}<br>
+        {{ form.description.label_tag }} {{ form.description }}<br>
+
+        {{ form.ingredients.label_tag }} {{ form.ingredients }}<br>
+
+        {{ form.steps.label_tag }} {{ form.steps }}<br>
+
+        {{ form.image.label_tag }} {{ form.image }}<br>
+        <input type="submit" value="Создать">
+    </form>
+
+    <p><a href="{% url 'recipe_list' %}">Назад к списку рецептов</a></p>
 {% endblock %}

@@ -13,7 +13,9 @@
                 <li><a href="{% url 'main' %}">Главная</a></li>
                 <li><a href="{% url 'about' %}">Обо мне</a></li>
                 <li><a href="{% url 'recipe_list' %}">Рецепты</a></li>
-                <li><a href="{% url 'create_recipe' %}">Создать новый рецепт</a></li>
+                {% if request.user.is_superuser %}
+                    <li><a href="{% url 'create_recipe' %}">Создать новый рецепт</a></li>
+                {% endif %}
                 <li><a href="{% url 'registration' %}">Регистрация</a></li>
                 <li><a href="/admin">Админ</a></li>
             </ul>
