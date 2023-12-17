@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Recipe
+from .models import Recipe, Ingredient
 from .forms import RecipeForm, RecipeDeleteForm
 
 
@@ -60,10 +60,26 @@ def create_recipe(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('recipe_list')
+            form.save(commit=False)  # Здесь commit=False предотвращает сохранение формы, чтобы мы могли добавить ингредиенты
+            ingredients_list = form.cleaned_data.get('ingredients', [])
+
+            # Исключаем ингредиенты из данных, чтобы они не попали в get_or_create
+            cleaned_data = form.cleaned_data.copy()
+            cleaned_data.pop('ingredients', None)
+
+            instance, created = Recipe.objects.get_or_create(**cleaned_data)
+
+            if created:
+                # Если объект был создан, связываем ингредиенты
+                for ingredient_name in ingredients_list:
+                    ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name)
+                    instance.ingredients.add(ingredient)
+
+            instance.save()
+            return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm()
+
     return render(request, 'create_recipe.html', {'form': form})
 
 
