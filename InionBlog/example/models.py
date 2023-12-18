@@ -22,6 +22,3 @@ class Comment(models.Model):
     is_deleted = models.BooleanField(default=False)
     deleted_by = models.ForeignKey(User, related_name='deleted_comments', null=True, blank=True,
                                    on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return f'{self.user.username} - {self.recipe.title} - {self.created_at}'
