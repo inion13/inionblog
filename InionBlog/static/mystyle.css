@@ -112,3 +112,98 @@ footer {
     width: 100%;
 }
 
+.recipe-list {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.recipe-list__items {
+    list-style: none;
+    padding: 0;
+}
+
+.recipe-list__item {
+    margin-bottom: 10px;
+}
+
+.recipe-list__link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.recipe-list__link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.recipe-title {
+    font-size: 24px;
+    color: #333;
+}
+
+.recipe-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.recipe-description {
+    font-size: 16px;
+    color: #333;
+}
+
+.section-title {
+    font-size: 20px;
+    color: #007bff;
+}
+
+.recipe-list {
+    list-style: disc;
+    padding: 0;
+}
+
+.step-recipe-list {
+    list-style: none;
+    padding: 0;
+}
+
+.delete-comment-link {
+    color: #ff0000;
+    margin-left: 10px;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.submit-comment-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.login-prompt {
+    font-size: 14px;
+    color: #999;
+}
+
+.edit-recipe-link,
+.delete-recipe-link {
+    display: block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.main-page-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}

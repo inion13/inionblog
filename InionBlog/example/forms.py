@@ -9,8 +9,8 @@ class RecipeForm(forms.ModelForm):
         required=False
     )
     steps = forms.CharField(
-        label='Шаги',
-        widget=forms.Textarea(attrs={'placeholder': 'Введите шаги приготовления, каждый с новой строки'}),
+        label='Этапы приготовления',
+        widget=forms.Textarea(attrs={'placeholder': 'Введите этапы приготовления, каждый с новой строки'}),
         required=False
     )
 
@@ -21,7 +21,7 @@ class RecipeForm(forms.ModelForm):
             'title': 'Название',
             'description': 'Описание',
             'ingredients': 'Ингредиенты',
-            'steps': 'Шаги',
+            'steps': 'Этапы приготовления',
             'image': 'Изображение',
         }
 

@@ -85,10 +85,8 @@ def create_recipe(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.image = form.cleaned_data['image']
-            instance.save()
-            return redirect('recipe_list')
+            instance = form.save()
+            return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm()
 
@@ -99,10 +97,10 @@ def create_recipe(request):
 def edit_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == 'POST':
-        form = RecipeForm(request.POST, instance=recipe)
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
-            instance = form.save()
-            return redirect('recipe_detail', recipe_id=instance.pk)
+            form.save()
+            return redirect('recipe_detail', recipe_id=recipe_id)
     else:
         form = RecipeForm(instance=recipe)
     return render(request, 'edit_recipe.html', {'form': form, 'recipe': recipe})

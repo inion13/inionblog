@@ -3,10 +3,14 @@
 {% block title %}Список рецептов{% endblock %}
 
 {% block content %}
-    <h3>Список рецептов:</h3>
-        <ul>
+    <div class="recipe-list">
+        <h3>Список рецептов:</h3>
+        <ul class="recipe-list__items">
             {% for recipe in lst_recipes %}
-                <li><a href="{% url 'recipe_detail' recipe_id=recipe.id %}">{{ recipe.title }}</a></li>
+                <li class="recipe-list__item">
+                    <a class="recipe-list__link" href="{% url 'recipe_detail' recipe_id=recipe.id %}">{{ recipe.title }}</a>
+                </li>
             {% endfor %}
         </ul>
+    </div>
 {% endblock %}

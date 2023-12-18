@@ -6,12 +6,12 @@
     <h1>Редактировать рецепт</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.title.label_tag }} {{ form.title }}<br>
-        {{ form.description.label_tag }} {{ form.description }}<br>
-        {{ form.ingredients.label_tag }} {{ form.ingredients }}<br>
-        {{ form.steps.label_tag }} {{ form.steps }}<br>
-        {{ form.image.label_tag }} {{ form.image }}<br>
-        <input type="submit" value="Сохранить изменения">
+        <p>{{ form.title.label_tag }} {{ form.title }}<br></p>
+        <p>{{ form.description.label_tag }} {{ form.description }}<br></p>
+        <p>{{ form.ingredients.label_tag }} {{ form.ingredients }}<br></p>
+        <p>{{ form.steps.label_tag }} {{ form.steps }}<br></p>
+        <p>{{ form.image.label_tag }} {{ form.image }}<br></p>
+        <p></p><input type="submit" value="Сохранить изменения"></p>
     </form>
-    <a href="{% url 'recipe_list' %}">Назад к списку рецептов</a>
+    <p><a href="{% url 'recipe_list' %}">Назад к списку рецептов</a></p>
 {% endblock %}
