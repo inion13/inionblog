@@ -1,13 +1,5 @@
 from django import forms
-from .models import Recipe
-
-
-class RecipeDeleteForm(forms.Form):
-    confirm_delete = forms.BooleanField(
-        required=True,
-        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        label='Подтвердите удаление'
-    )
+from .models import Recipe, Comment
 
 
 class RecipeForm(forms.ModelForm):
@@ -42,3 +34,17 @@ class RecipeForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class RecipeDeleteForm(forms.Form):
+    confirm_delete = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='Подтвердите удаление'
+    )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']

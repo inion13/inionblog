@@ -31,7 +31,7 @@ nav a:hover {
 }
 
 footer {
-    background-color: #a7e34d;
+    background-color: #bdbdbd;
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -51,7 +51,7 @@ footer {
 }
 
 .footer-section h3 {
-    color: #ffff70;
+    color: #fff;
     margin-bottom: 15px;
 }
 

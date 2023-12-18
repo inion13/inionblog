@@ -21,6 +21,24 @@
             <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
         {% endif %}
 
+        <h2>Комментарии:</h2>
+        {% for comment in comments %}
+            <p><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</p>
+            {% if request.user.is_authenticated and request.user == comment.user or request.user.is_superuser %}
+                <a href="{% url 'delete_comment' comment_id=comment.pk %}">Удалить комментарий</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'recipe_detail' recipe_id=recipe.pk %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Оставить комментарий</button>
+            </form>
+        {% else %}
+            <p>Чтобы оставить комментарий, пожалуйста <a href="{% url 'login' %}">войдите в систему</a>.</p>
+        {% endif %}
+
         {% if request.user.is_superuser %}
             <a href="{% url 'edit_recipe' recipe_id=recipe.pk %}">Редактировать рецепт</a>
             <p></p>

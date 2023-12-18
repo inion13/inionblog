@@ -2,10 +2,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Recipe
-from .forms import RecipeForm, RecipeDeleteForm
+from .models import Recipe, Comment
+from .forms import RecipeForm, RecipeDeleteForm, CommentForm
+
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
 
 
 def is_superuser(user):
@@ -37,10 +41,6 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
-class CustomLoginView(LoginView):
-    template_name = 'login.html'
-
-
 def logout_view(request):
     logout(request)
     return render(request, 'main.html')
@@ -64,7 +64,20 @@ def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     recipe.steps = recipe.steps.split('\n')
     recipe.ingredients = recipe.ingredients.split('\n')
-    return render(request, 'recipe_detail.html', {'recipe': recipe})
+    comments = Comment.objects.filter(recipe=recipe).order_by('-created_at')
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.recipe = recipe
+            comment.save()
+            return redirect('recipe_detail', recipe_id=recipe_id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'recipe_detail.html', {'recipe': recipe, 'comments': comments, 'form': form})
 
 
 @user_passes_test(is_superuser, login_url='/registration/')
@@ -106,3 +119,13 @@ def delete_recipe(request, recipe_id):
     else:
         form = RecipeDeleteForm()
     return render(request, 'delete_recipe.html', {'form': form, 'recipe': recipe})
+
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    # Проверка на автора комментария или суперпользователя
+    if request.user == comment.user or request.user.is_superuser:
+        comment.delete()
+
+    return redirect('recipe_detail', recipe_id=comment.recipe.pk)
