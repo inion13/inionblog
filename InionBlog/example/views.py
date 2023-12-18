@@ -124,7 +124,6 @@ def delete_recipe(request, recipe_id):
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
 
-    # Проверка на автора комментария или суперпользователя
     if request.user == comment.user or request.user.is_superuser:
         comment.delete()
 
