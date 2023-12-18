@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Recipe
@@ -9,6 +10,17 @@ from .forms import RecipeForm, RecipeDeleteForm
 
 def is_superuser(user):
     return user.is_superuser
+
+
+def user_registration(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration.html', {'form': form})
 
 
 def user_login(request):
@@ -25,20 +37,13 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+
+
 def logout_view(request):
     logout(request)
-    return redirect('login')
-
-
-def user_registration(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration.html', {'form': form})
+    return render(request, 'main.html')
 
 
 # @login_required
@@ -65,9 +70,11 @@ def recipe_detail(request, recipe_id):
 @user_passes_test(is_superuser, login_url='/registration/')
 def create_recipe(request):
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.image = form.cleaned_data['image']
+            instance.save()
             return redirect('recipe_list')
     else:
         form = RecipeForm()

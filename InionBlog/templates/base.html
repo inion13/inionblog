@@ -16,7 +16,12 @@
                 {% if request.user.is_superuser %}
                     <li><a href="{% url 'create_recipe' %}">Создать новый рецепт</a></li>
                 {% endif %}
-                <li><a href="{% url 'registration' %}">Регистрация</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Вход</a></li>
+                    <li><a href="{% url 'registration' %}">Регистрация</a></li>
+                {% endif %}
                 <li><a href="/admin">Админ</a></li>
             </ul>
         </nav>

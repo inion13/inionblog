@@ -32,3 +32,13 @@ class RecipeForm(forms.ModelForm):
             'steps': 'Шаги',
             'image': 'Изображение',
         }
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        if self.cleaned_data.get('image'):
+            instance.image = self.cleaned_data['image']
+
+        if commit:
+            instance.save()
+        return instance

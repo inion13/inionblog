@@ -23,6 +23,7 @@
 
         {% if request.user.is_superuser %}
             <a href="{% url 'edit_recipe' recipe_id=recipe.pk %}">Редактировать рецепт</a>
+            <p></p>
             <a href="{% url 'delete_recipe' recipe_id=recipe.pk %}">Удалить рецепт</a>
         {% endif %}
     </div>
