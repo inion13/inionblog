@@ -144,6 +144,7 @@ footer {
 .recipe-title {
     font-size: 24px;
     color: #333;
+    text-align: center;
 }
 
 .recipe-image {
@@ -160,6 +161,7 @@ footer {
 .section-title {
     font-size: 20px;
     color: #007bff;
+    padding: 20px;
 }
 
 .recipe-list {
