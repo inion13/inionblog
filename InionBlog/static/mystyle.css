@@ -113,6 +113,30 @@ footer {
     width: 100%;
 }
 
+/* Главная страница */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.main-page-text {
+    color: #2151a2;
+    text-align: center;
+    padding: 20px 0 0 0;
+}
+
+.main-page-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Страница с рецептом */
+
 .recipe-container {
     max-width: 800px;
     margin: 0 auto;
@@ -141,7 +165,7 @@ footer {
 .section-title {
     font-size: 20px;
     color: #007bff;
-    padding: 20px 40px 0;
+    padding: 20px 50px 0;
 }
 
 .ingredient-list {
@@ -158,18 +182,23 @@ footer {
 .comment-author {
     color: #2151a2;
     padding: 0 20px 0 20px;
+    font-size: 1.1em;
 }
 
 .comment-text {
-    padding: 0 20px 0 40px;
+    padding: 0 60px 0 40px;
+    font-size: 0.9em;
 }
 
 .delete-comment-link {
     color: #ff0000;
-    margin-left: 50px;
+    margin-left: 60px;
+    font-size: 0.9em;
+
 }
 
 .comment-form {
+    margin-right: 60px;
     margin-top: 30px;
 }
 
@@ -207,17 +236,6 @@ footer {
     padding: 0 0 30px 20px;
 }
 
-.main-page-image {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-.main-page-text {
-    color: #333;
-    text-align: center;
-}
-
 .recipe-list {
     max-width: 800px;
     margin: 0 auto;
@@ -237,18 +255,21 @@ footer {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: 480px;
+    height: 480px;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
 }
 
+.recipe-list__title {
+    padding:0 16px 0 16px;
+}
+
 .recipe-list__link {
     text-decoration: none;
-    color: #007bff;
+    color: inherit;
     font-weight: bold;
-    padding: 0 10px 0 10px;
 }
 
 .recipe-list__image {
@@ -263,13 +284,15 @@ footer {
     position: relative;
     max-height: 250px;
     color: #000000;
-    padding:0 10px 0 10px;
+    padding:0 16px 0 16px;
     font-size: 0.9em;
+    font-weight: normal;
 }
 
 .recipe-list__link:hover {
     color: #00a86b;
 }
+
 
 .recipe-list__description:after {
     content: "";

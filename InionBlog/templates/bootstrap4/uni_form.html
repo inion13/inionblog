@@ -1,0 +1,15 @@
+{% extends crispy_template %}
+
+{% load crispy_forms_field %}
+{% load i18n %}
+
+{% block css %}
+  {{ block.super }}
+  {# Дополнительные стили могут быть добавлены здесь #}
+{% endblock %}
+
+{% block content %}
+  {% for field in form.visible_fields %}
+    {% if field.type in form.helper.inputs %}{% crispy_field field %}{% endif %}
+  {% endfor %}
+{% endblock %}

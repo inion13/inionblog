@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Submit
 from django import forms
 from .models import Recipe, Comment
 
@@ -48,3 +50,11 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text']
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('text', css_class='form-control', rows=3),
+            Submit('submit', 'Post Comment', css_class='btn btn-primary')
+        )

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Рецепт: {{ recipe.title }}{% endblock %}
 
 {% block content %}
@@ -26,10 +28,11 @@
 
         <h2 class="section-title">Комментарии:</h2>
         {% for comment in comments %}
-            <p><strong><a class="comment-author">{{ comment.user.username }}</a></strong><br>
-                <a class="comment-text">{{ comment.text }}</a></p>
+            <p><strong class="comment-author">{{ comment.user.username }}</strong></p>
+            <p class="comment-text">{{ comment.text }}</p>
             {% if request.user.is_authenticated and request.user == comment.user or request.user.is_superuser %}
-                <a class="delete-comment-link" href="{% url 'delete_comment' comment_id=comment.pk %}">Удалить комментарий</a>
+                <p><a class="delete-comment-link" href="{% url 'delete_comment' comment_id=comment.pk %}">
+                    Удалить комментарий</a></p>
             {% endif %}
         {% endfor %}
 
