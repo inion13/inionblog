@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container">
         <h3 class="main-page-text">Добро пожаловать на мой кулинарный блог!</h3>
-        <h3 class="main-page-text">Здесь вы найдете множество интересных рецептов на любой вкус</h3>
+        <h3 class="main-page-text_2">Здесь вы найдете множество интересных рецептов на любой вкус</h3>
         <img src="{% if main_image %}{{ main_image.url }}{% else %}{% static 'images/main_recipes.jpg' %}{% endif %}" alt="Главное изображение блога" class="main-page-image">
     </div>
 {% endblock %}

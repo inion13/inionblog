@@ -5,6 +5,16 @@ from .models import Recipe, Comment
 
 
 class RecipeForm(forms.ModelForm):
+    title = forms.CharField(
+        label='Имя',
+        widget=forms.Textarea(),
+        required=False
+    )
+    description = forms.CharField(
+        label='Описание',
+        widget=forms.Textarea(attrs={'placeholder': 'Введите краткое описание рецепта'}),
+        required=False
+    )
     ingredients = forms.CharField(
         label='Ингредиенты',
         widget=forms.Textarea(attrs={'placeholder': 'Введите ингредиенты, каждый с новой строки'}),
@@ -20,7 +30,7 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         fields = ['title', 'description', 'ingredients', 'steps', 'image']
         labels = {
-            'title': 'Название',
+            'title': 'Имя',
             'description': 'Описание',
             'ingredients': 'Ингредиенты',
             'steps': 'Этапы приготовления',

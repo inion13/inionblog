@@ -12,7 +12,11 @@
             <img class="recipe-image" src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
         {% endif %}
 
-        <p class="recipe-description">{{ recipe.description }}</p>
+        <ul class="recipe-description">
+            {% for description in recipe.description %}
+                <li>{{ description }}</li>
+            {% endfor %}
+        </ul>
         <h2 class="section-title">Ингредиенты:</h2>
         <ul class="ingredient-list">
             {% for ingredient in recipe.ingredients %}
@@ -22,7 +26,7 @@
         <h2 class="section-title">Этапы приготовления:</h2>
         <ul class="step-recipe-list">
             {% for step in recipe.steps %}
-                <li>  {{ step }}</li>
+                <li>{{ step }}</li>
             {% endfor %}
         </ul>
 

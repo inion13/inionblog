@@ -5,14 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Recipe, Comment
 from .forms import RecipeForm, RecipeDeleteForm, CommentForm
-
-
-class CustomLoginView(LoginView):
-    template_name = 'login.html'
-
-
-def is_superuser(user):
-    return user.is_superuser
+from .utils import is_superuser
 
 
 def user_registration(request):
@@ -55,14 +48,15 @@ def about(request):
 
 
 def recipe_list(request):
-    lst_recipes = Recipe.objects.all()
+    lst_recipes = Recipe.objects.all().order_by('-created_at')
     return render(request, 'recipe_list.html', {'lst_recipes': lst_recipes})
 
 
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe.steps = recipe.steps.split('\n')
+    recipe.description = recipe.description.split('\n')
     recipe.ingredients = recipe.ingredients.split('\n')
+    recipe.steps = recipe.steps.split('\n')
     comments = Comment.objects.filter(recipe=recipe).order_by('-created_at')
 
     if request.method == 'POST':

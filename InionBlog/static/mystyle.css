@@ -129,9 +129,14 @@ footer {
     padding: 20px 0 0 0;
 }
 
+.main-page-text_2 {
+    color: #2151a2;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
 .main-page-image {
     max-width: 100%;
-    height: auto;
     border-radius: 12px;
 }
 
@@ -159,6 +164,7 @@ footer {
 }
 
 .recipe-description {
+    list-style: none;
     padding: 0 20px 0 20px;
 }
 
@@ -216,6 +222,7 @@ footer {
 .login-prompt {
     font-size: 14px;
     color: #999;
+    padding: 30px 0 30px 20px;
 }
 
 .edit-recipe-link {
@@ -235,6 +242,8 @@ footer {
     text-decoration: none;
     padding: 0 0 30px 20px;
 }
+
+/* Список рецептов */
 
 .recipe-list {
     max-width: 800px;
@@ -264,6 +273,7 @@ footer {
 
 .recipe-list__title {
     padding:0 16px 0 16px;
+    font-size: 1.1em;
 }
 
 .recipe-list__link {

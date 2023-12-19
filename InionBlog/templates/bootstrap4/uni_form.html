@@ -1,15 +1,16 @@
-{% extends crispy_template %}
+{% load crispy_forms_tags %}
 
-{% load crispy_forms_field %}
-{% load i18n %}
-
-{% block css %}
-  {{ block.super }}
-  {# Дополнительные стили могут быть добавлены здесь #}
-{% endblock %}
-
-{% block content %}
-  {% for field in form.visible_fields %}
-    {% if field.type in form.helper.inputs %}{% crispy_field field %}{% endif %}
-  {% endfor %}
-{% endblock %}
+	<!--Contact form-->
+	<div style="margin:80px">
+		<h1>Contact</h1>
+		<h4>Contact us directly if you have any questions</h4>
+		<p>
+			Please write your name, email address and a message below if you have any questions.
+			One of our staff members will be happy to contact you directly and answer your questions as soon as possible.
+		</p>
+		<form method="post">
+        	{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
