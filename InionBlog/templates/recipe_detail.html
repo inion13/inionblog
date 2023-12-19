@@ -3,7 +3,7 @@
 {% block title %}Рецепт: {{ recipe.title }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="recipe-container">
         <h1 class="recipe-title">{{ recipe.title }}</h1>
 
         {% if recipe.image %}
@@ -12,7 +12,7 @@
 
         <p class="recipe-description">{{ recipe.description }}</p>
         <h2 class="section-title">Ингредиенты:</h2>
-        <ul class="recipe-list">
+        <ul class="ingredient-list">
             {% for ingredient in recipe.ingredients %}
                 <li>{{ ingredient }}</li>
             {% endfor %}
@@ -26,7 +26,8 @@
 
         <h2 class="section-title">Комментарии:</h2>
         {% for comment in comments %}
-            <p><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</p>
+            <p><strong><a class="comment-author">{{ comment.user.username }}</a></strong><br>
+                <a class="comment-text">{{ comment.text }}</a></p>
             {% if request.user.is_authenticated and request.user == comment.user or request.user.is_superuser %}
                 <a class="delete-comment-link" href="{% url 'delete_comment' comment_id=comment.pk %}">Удалить комментарий</a>
             {% endif %}

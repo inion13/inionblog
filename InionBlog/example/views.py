@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Recipe, Comment
 from .forms import RecipeForm, RecipeDeleteForm, CommentForm
@@ -121,8 +120,6 @@ def delete_recipe(request, recipe_id):
 
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
-
     if request.user == comment.user or request.user.is_superuser:
         comment.delete()
-
     return redirect('recipe_detail', recipe_id=comment.recipe.pk)

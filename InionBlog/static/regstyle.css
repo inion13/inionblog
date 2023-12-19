@@ -1,8 +1,8 @@
 body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
-            text-align: center;
             margin: 50px;
+            text-align: center;
         }
 
         h2 {
@@ -30,3 +30,11 @@ body {
         button:hover {
             background-color: #45a049;
         }
+
+.reg_input {
+    text-align: left;
+}
+
+.reg_button {
+    text-align: center;
+}
