@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from . import views
 from .utils import CustomLoginView
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     path('recipes/create/', views.create_recipe, name='create_recipe'),
     path('recipes/edit/<int:recipe_id>/', views.edit_recipe, name='edit_recipe'),
     path('recipes/delete/<int:recipe_id>/', views.delete_recipe, name='delete_recipe'),
-    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment')
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]
 
 if settings.DEBUG:

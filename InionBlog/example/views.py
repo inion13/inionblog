@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+
 from .models import Recipe, Comment
 from .forms import RecipeForm, RecipeDeleteForm, CommentForm
 from .utils import is_superuser
@@ -58,7 +59,6 @@ def recipe_detail(request, recipe_id):
     recipe.ingredients = recipe.ingredients.split('\n')
     recipe.steps = recipe.steps.split('\n')
     comments = Comment.objects.filter(recipe=recipe).order_by('-created_at')
-
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -66,11 +66,13 @@ def recipe_detail(request, recipe_id):
             comment.user = request.user
             comment.recipe = recipe
             comment.save()
-            return redirect('recipe_detail', recipe_id=recipe_id)
+            redirect_url = reverse('recipe_detail', kwargs={'recipe_id': recipe_id})
+            redirect_url += '#comments-section'
+            return redirect(redirect_url)
     else:
         form = CommentForm()
-
-    return render(request, 'recipe_detail.html', {'recipe': recipe, 'comments': comments, 'form': form})
+    return render(request, 'recipe_detail.html',
+                  {'recipe': recipe, 'comments': comments, 'form': form})
 
 
 @user_passes_test(is_superuser, login_url='/registration/')
@@ -82,7 +84,6 @@ def create_recipe(request):
             return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm()
-
     return render(request, 'create_recipe.html', {'form': form})
 
 
@@ -115,5 +116,9 @@ def delete_recipe(request, recipe_id):
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.user == comment.user or request.user.is_superuser:
+        comment_recipe_id = comment.recipe.pk
         comment.delete()
+        redirect_url = reverse('recipe_detail', kwargs={'recipe_id': comment_recipe_id})
+        redirect_url += '#comments-section'
+        return redirect(redirect_url)
     return redirect('recipe_detail', recipe_id=comment.recipe.pk)

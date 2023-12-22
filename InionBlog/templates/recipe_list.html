@@ -9,10 +9,10 @@
             {% for recipe in lst_recipes %}
                 <a class="recipe-list__link" href="{% url 'recipe_detail' recipe_id=recipe.id %}">
                     <li class="recipe-list__item">
-                        <p class="recipe-list__title"><strong>{{ recipe.title }}</strong></p>
                         {% if recipe.image %}
                             <img class="recipe-list__image" src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
                         {% endif %}
+                        <p class="recipe-list__title"><strong>{{ recipe.title }}</strong></p>
                         {% if recipe.description %}
                             <p class="recipe-list__description">{{ recipe.description }}</p>
                         {% endif %}
