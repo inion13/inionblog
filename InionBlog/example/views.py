@@ -17,6 +17,7 @@ def user_registration(request):
             return redirect('login')
     else:
         form = UserCreationForm()
+
     return render(request, 'registration.html', {'form': form})
 
 
@@ -31,6 +32,7 @@ def user_login(request):
                 login(request, user)
     else:
         form = AuthenticationForm()
+
     return render(request, 'login.html', {'form': form})
 
 
@@ -59,6 +61,7 @@ def recipe_detail(request, recipe_id):
     recipe.ingredients = recipe.ingredients.split('\n')
     recipe.steps = recipe.steps.split('\n')
     comments = Comment.objects.filter(recipe=recipe).order_by('-created_at')
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -71,6 +74,7 @@ def recipe_detail(request, recipe_id):
             return redirect(redirect_url)
     else:
         form = CommentForm()
+
     return render(request, 'recipe_detail.html',
                   {'recipe': recipe, 'comments': comments, 'form': form})
 
@@ -84,6 +88,7 @@ def create_recipe(request):
             return redirect('recipe_detail', recipe_id=instance.pk)
     else:
         form = RecipeForm()
+
     return render(request, 'create_recipe.html', {'form': form})
 
 
@@ -97,12 +102,14 @@ def edit_recipe(request, recipe_id):
             return redirect('recipe_detail', recipe_id=recipe_id)
     else:
         form = RecipeForm(instance=recipe)
+
     return render(request, 'edit_recipe.html', {'form': form, 'recipe': recipe})
 
 
 @user_passes_test(is_superuser, login_url='/registration/')
 def delete_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+
     if request.method == 'POST':
         form = RecipeDeleteForm(request.POST)
         if form.is_valid() and form.cleaned_data['confirm_delete']:
@@ -110,15 +117,18 @@ def delete_recipe(request, recipe_id):
             return redirect('recipe_list')
     else:
         form = RecipeDeleteForm()
+
     return render(request, 'delete_recipe.html', {'form': form, 'recipe': recipe})
 
 
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
+
     if request.user == comment.user or request.user.is_superuser:
         comment_recipe_id = comment.recipe.pk
         comment.delete()
         redirect_url = reverse('recipe_detail', kwargs={'recipe_id': comment_recipe_id})
         redirect_url += '#comments-section'
         return redirect(redirect_url)
+
     return redirect('recipe_detail', recipe_id=comment.recipe.pk)
