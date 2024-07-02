@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'main' %}">Главная</a></li>
+                <li><a href="{% url 'about' %}">Обо мне</a></li>
+                <li><a href="{% url 'recipe_list' %}">Рецепты</a></li>
+                {% if request.user.is_superuser %}
+                    <li><a href="{% url 'create_recipe' %}">Создать новый рецепт</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Вход</a></li>
+                    <li><a href="{% url 'registration' %}">Регистрация</a></li>
+                {% endif %}
+                <li><a href="/admin">Админ</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="content" style="padding: 80px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Обо мне</h3>
+                <p>Это учебный проект</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p><strong>Email:</strong> inion@gmail.com</p>
+                <p><strong>Телефон:</strong> +7 9021 01 01 01</p>
+                <p><strong>Основной сайт:</strong> <a href="https://dzen.ru/bestrecipes">https://dzen.ru/bestrecipes</a></p>
+            </div>
+        </div>
+        <p>&copy; 2023 Мой сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>

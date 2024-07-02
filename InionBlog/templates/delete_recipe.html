@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить рецепт: {{ recipe.title }}{% endblock %}
+
+{% block content %}
+    <h2>Удалить рецепт</h2>
+    <form method="post" action="{% url 'delete_recipe' recipe_id=recipe.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Удалить</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Рецепт: {{ recipe.title }}{% endblock %}
+
+{% block content %}
+    <div class="recipe-container">
+        <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+        {% if recipe.image %}
+            <img class="recipe-image" src="{{ recipe.image.url }}" alt="Главное изображение рецепта">
+        {% endif %}
+
+        <ul class="recipe-description">
+            {% for description in recipe.description %}
+                <li>{{ description }}</li>
+            {% endfor %}
+        </ul>
+        <h2 class="section-title">Ингредиенты:</h2>
+        <ul class="ingredient-list">
+            {% for ingredient in recipe.ingredients %}
+                <li>{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <h2 class="section-title">Этапы приготовления:</h2>
+        <ul class="step-recipe-list">
+            {% for step in recipe.steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
+
+        <div id="comments-section">
+            <h2 class="section-title">Комментарии:</h2>
+            {% for comment in comments %}
+                <p><strong class="comment-author">{{ comment.user.username }}</strong></p>
+                <p class="comment-text">{{ comment.text }}</p>
+                {% if request.user.is_authenticated and request.user == comment.user or request.user.is_superuser %}
+                    <p><a class="delete-comment-link" href="{% url 'delete_comment' comment_id=comment.pk %}">
+                        Удалить комментарий</a></p>
+                {% endif %}
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <form class="comment-form" method="post" action="{% url 'recipe_detail' recipe_id=recipe.pk %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="submit-comment-button" type="submit">Оставить комментарий</button>
+                </form>
+            {% else %}
+                <p class="login-prompt">Чтобы оставить комментарий, пожалуйста <a href="{% url 'login' %}">
+                    войдите в систему</a>.</p>
+            {% endif %}
+        </div>
+
+        {% if request.user.is_superuser %}
+            <p></p>
+            <a class="edit-recipe-link" href="{% url 'edit_recipe' recipe_id=recipe.pk %}">Редактировать рецепт</a>
+            <p></p>
+            <a class="delete-recipe-link" href="{% url 'delete_recipe' recipe_id=recipe.pk %}">Удалить рецепт</a>
+        {% endif %}
+    </div>
+{% endblock %}

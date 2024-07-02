@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Список рецептов{% endblock %}
+
+{% block content %}
+    <div class="recipe-list">
+        <h1>Рецепты</h1>
+        <ul class="recipe-list__items">
+            {% for recipe in lst_recipes %}
+                <a class="recipe-list__link" href="{% url 'recipe_detail' recipe_id=recipe.id %}">
+                    <li class="recipe-list__item">
+                        {% if recipe.image %}
+                            <img class="recipe-list__image" src="{{ recipe.image.url }}" alt="Главное изображение">
+                        {% endif %}
+                        <p class="recipe-list__title"><strong>{{ recipe.title }}</strong></p>
+                        {% if recipe.description %}
+                            <p class="recipe-list__description">{{ recipe.description }}</p>
+                        {% endif %}
+                    </li>
+                </a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
