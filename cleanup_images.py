@@ -7,7 +7,7 @@ django.setup()
 
 from example.models import Recipe
 
-IMAGE_DIR = 'D:/YandexDisk/Python/mathshub/projects/inionblog/InionBlog/images'
+IMAGE_DIR = '/media'
 
 image_files = os.listdir(IMAGE_DIR)
 
