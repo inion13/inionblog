@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  web:
+    image: my-django-app:latest
+    build: .
+    command: python /app/InionBlog/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+      - dbdata:/var/lib/postgresql/data  # если вы используете PostgreSQL в Docker
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  static_volume:
+  media_volume:
+  dbdata:
